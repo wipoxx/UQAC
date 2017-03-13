@@ -1,0 +1,25 @@
+body {
+    font-family: sans-serif;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+}
+
+nav {
+    width: 75%;
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+#formRecherche {
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+}
+#formRecherche input {
+    padding: 10px;
+}
