@@ -4,15 +4,22 @@ body {
 }
 
 h1 {
-    text-align: center;
+    width: 75%;
 }
 
 nav {
+    width: 25%;
+    margin-left: auto;
+}
+
+div {
+    margin-bottom: 3%;
     width: 75%;
+}
+
+#banner {
     display: flex;
-    justify-content: space-around;
-    margin: auto;
-    margin-bottom: 5%;
+    justify-content: flex-end;
 }
 
 #formRecherche {
@@ -20,6 +27,8 @@ nav {
     justify-content: space-around;
     margin: auto;
 }
+
 #formRecherche input {
-    padding: 10px;
+    height: 5vh;
 }
+

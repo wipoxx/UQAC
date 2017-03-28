@@ -1,0 +1,25 @@
+#form_inscription{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+input, span {
+    width: 40vw;
+    height: 5vh;
+    text-align: center;
+    border-width: 0px;
+    border: 2px solid black;
+    margin-bottom: 1vh;
+}
+
+span {
+    padding: 0%;
+    border: 0;
+    margin-bottom: 1vh;
+}
+.champ_divise {
+    width: 19vw;
+}
