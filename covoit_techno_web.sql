@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 30 Mars 2017 à 18:57
+-- Généré le :  Jeu 30 Mars 2017 à 21:50
 -- Version du serveur :  10.1.19-MariaDB
 -- Version de PHP :  5.6.28
 
@@ -29,19 +29,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `composetrajet` (
   `IdTrajet` int(11) NOT NULL,
   `IdTrajetElementaire` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `etape`
---
-
-CREATE TABLE `etape` (
-  `IdEtape` int(11) NOT NULL,
-  `VilleEtape` varchar(100) NOT NULL,
-  `HeureArrivee` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Heure d''arrivee dans la ville, le depart se fait 10 min apres',
-  `IdTrajetElementaire` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -88,9 +75,11 @@ CREATE TABLE `trajet` (
 CREATE TABLE `trajetelementaire` (
   `IdTrajetElementaire` int(11) NOT NULL,
   `IdVoyage` int(11) NOT NULL,
-  `IdEtapeDep` int(11) NOT NULL,
-  `IdEtapeArr` int(11) NOT NULL,
-  `NbPlaces` int(11) NOT NULL
+  `NbPlaces` int(11) NOT NULL,
+  `VilleDep` varchar(100) NOT NULL,
+  `HeureDep` time NOT NULL,
+  `VilleArr` varchar(100) NOT NULL,
+  `HeureArr` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -136,13 +125,6 @@ ALTER TABLE `composetrajet`
   ADD KEY `FK_trajetelem_compose` (`IdTrajetElementaire`);
 
 --
--- Index pour la table `etape`
---
-ALTER TABLE `etape`
-  ADD PRIMARY KEY (`IdEtape`),
-  ADD KEY `fk_etape_trajetelem` (`IdTrajetElementaire`);
-
---
 -- Index pour la table `preference`
 --
 ALTER TABLE `preference`
@@ -166,9 +148,7 @@ ALTER TABLE `trajet`
 --
 ALTER TABLE `trajetelementaire`
   ADD PRIMARY KEY (`IdTrajetElementaire`),
-  ADD KEY `FK_trajetElem_voyage` (`IdVoyage`),
-  ADD KEY `fk_etapeDep` (`IdEtapeDep`),
-  ADD KEY `fk_etapeArr` (`IdEtapeArr`);
+  ADD KEY `FK_trajetElem_voyage` (`IdVoyage`);
 
 --
 -- Index pour la table `usager`
@@ -188,11 +168,6 @@ ALTER TABLE `voyage`
 -- AUTO_INCREMENT pour les tables exportées
 --
 
---
--- AUTO_INCREMENT pour la table `etape`
---
-ALTER TABLE `etape`
-  MODIFY `IdEtape` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `preference`
 --
@@ -230,12 +205,6 @@ ALTER TABLE `composetrajet`
   ADD CONSTRAINT `FK_trajetelem_compose` FOREIGN KEY (`IdTrajetElementaire`) REFERENCES `trajetelementaire` (`IdTrajetElementaire`);
 
 --
--- Contraintes pour la table `etape`
---
-ALTER TABLE `etape`
-  ADD CONSTRAINT `fk_etape_trajetelem` FOREIGN KEY (`IdTrajetElementaire`) REFERENCES `trajetelementaire` (`IdTrajetElementaire`);
-
---
 -- Contraintes pour la table `reservation`
 --
 ALTER TABLE `reservation`
@@ -246,9 +215,7 @@ ALTER TABLE `reservation`
 -- Contraintes pour la table `trajetelementaire`
 --
 ALTER TABLE `trajetelementaire`
-  ADD CONSTRAINT `FK_trajetElem_voyage` FOREIGN KEY (`IdVoyage`) REFERENCES `voyage` (`IdVoyage`),
-  ADD CONSTRAINT `fk_etapeArr` FOREIGN KEY (`IdEtapeArr`) REFERENCES `etape` (`IdEtape`),
-  ADD CONSTRAINT `fk_etapeDep` FOREIGN KEY (`IdEtapeDep`) REFERENCES `etape` (`IdEtape`);
+  ADD CONSTRAINT `FK_trajetElem_voyage` FOREIGN KEY (`IdVoyage`) REFERENCES `voyage` (`IdVoyage`);
 
 --
 -- Contraintes pour la table `voyage`
