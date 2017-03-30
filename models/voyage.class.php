@@ -1,7 +1,10 @@
 <?php
-require_once(_CTRL_ . 'trajet.class.php');
-require_once(_CTRL_ . 'usager.class.php');
-class Voyage {
+require_once(_MODELS_ . 'trajet.class.php');
+require_once(_MODELS_ . 'usager.class.php');
+require_once(_MODELS_.'hydratable.class.php');
+require_once(_BDD_ . 'BDDLocale.class.php');
+
+class Voyage extends Hydratable{
     
     //Liste des trajets qui forment le voyage
     private $lTrajets = array();
@@ -10,12 +13,73 @@ class Voyage {
     private $jour;
     
     
-    public function __construct(Usager $conducteur, int $nbPlaces, string $date) {
+   /* public function __construct(Usager $conducteur, int $nbPlaces, string $date) {
     //public function __construct() {
         $this->conducteur = $conducteur;
         $this->nbPlacesVoyage = $nbPlaces;
         $this->date = $date;
+    }*/
+    
+    public function __construct($data) {
+        parent::__construct($data);
     }
+    
+    
+
+    //Fonction d'enregistrement du voyage (ajoute ou modifie en fonction de la valeur de l'id)
+    public function save()
+    {
+        if($this->id)
+            $this->update();
+        else
+            $this->insert();
+    }
+
+
+    //Ajoute le voyage à la base de données
+    private function insert()
+    {
+        $query = "INSERT INTO voyage SET IdUsager = :conducteur, JourDepart = :jour, NbPlaces = :nbPlacesVoyage;";
+        $parameters = array(
+            array( 'name' => ':conducteur', 'value' => $this->getConducteur(), 'type' => 'string'),
+            array( 'name' => ':jour', 'value' => $this->getJour(), 'type' => 'string'),
+            array( 'name' => ':nbPlacesVoyage', 'value' => $this->getNbPlacesVoyage(), 'type' => 'string')
+        );
+
+        $db = BDDLocale::getInstance();
+        $db->execute($query, $parameters);
+    }
+
+    /**
+     * Modifie le voyage dans la base de données
+     */
+    private function update()
+    {
+        $query = "UPDATE voyage SET IdUsager = :conducteur, JourDepart = :jour, NbPlaces = :nbPlacesVoyage;";
+        $parameters = array(
+            array( 'name' => ':conducteur', 'value' => $this->getConducteur(), 'type' => 'string'),
+            array( 'name' => ':jour', 'value' => $this->getJour(), 'type' => 'string'),
+            array( 'name' => ':nbPlacesVoyage', 'value' => $this->getNbPlacesVoyage(), 'type' => 'string')
+        );
+
+        $db = BDDLocale::getInstance();
+        $db->execute($query, $parameters);
+    }
+
+    /**
+     * Supprime le voyage de la base de données
+     */
+    public function remove()
+    {
+        $query = "DELETE FROM voyage  WHERE IdVoyage = :id;";
+        $parameters = array(
+            array( 'name' => ':id', 'value' => $this->id, 'type' => 'int')
+        );
+
+        $db = BDDLocale::getInstance();
+        $db->execute($query, $parameters);
+    }
+
     
     //Ajouter un trajet à la liste
     public function ajoutTrajet(Etape $eDep, Etape $eArr) {
@@ -87,5 +151,32 @@ class Voyage {
             echo 'pas ville de départ';
         }*/
     }
+    
+    //-----------Acesseurs
+    
+    public function setConducteur($value) {
+        $this->conducteur = $value;
+    }
+    
+    public function getConducteur() {
+        return $this->conducteur;
+    }
+    
+    public function setNbPlacesVoyage($value) {
+        $this->nbPlacesVoyage = $value;
+    }
+    
+    public function getNbPlacesVoyage() {
+        return $this->nbPlacesVoyage;
+    }
+    
+    public function setJour($value) {
+        $this->jour = $value;
+    }
+    
+    public function getJour() {
+        return $this->jour;
+    }
+    
     
 }
