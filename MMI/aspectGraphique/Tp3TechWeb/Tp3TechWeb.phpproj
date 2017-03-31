@@ -23,7 +23,19 @@
     <Compile Include="constants.php" />
     <Compile Include="Deconnexion.php" />
     <Compile Include="functions.php" />
-    <Compile Include="indexR.php" />
+    <Compile Include="index.php" />
     <Compile Include="register.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="form_button.gif" />
+    <Content Include="form_email.gif" />
+    <Content Include="form_name.gif" />
+    <Content Include="img\form_button.gif" />
+    <Content Include="img\form_email.gif" />
+    <Content Include="img\form_name.gif" />
+    <Content Include="style.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="img\" />
   </ItemGroup>
 </Project>

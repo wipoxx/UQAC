@@ -2,30 +2,40 @@
 
 if (empty($_POST['pseudo']))
 {
-	echo '<!DOCTYPE html>';
-	echo '<html>';
-	echo '<head>
-	<meta charset=UTF-8" />
-	</head>
-	<h1>Inscription </h1>';
-	echo '<form method="post" action="register.php" enctype="multipart/form-data">
+	echo '<!DOCTYPE html>
+	<html>
+	    <head>
+	        <meta charset=UTF-8" />
+            <link rel="stylesheet" href="style.css">
+	    </head>
+        <body>
+            <div>
+	            <h1>Inscription TravelExpress </h1>
+	            <form method="post" action="register.php" enctype="multipart/form-data">
+	                <fieldset> <legend>Identifiants</legend>
+                        <p>
+                            <INPUT type="radio" name="genre" value="Homme"> Homme
+                            <INPUT type="radio" name="genre" value="Femme"> Femme
+                        </p>
+                        <p>
+	                        <input name="prenom" type="text" id="prenom" placeholder="Prénom" size ="30"/><br />
+	                        <input name="nom" type="text" id="nom" placeholder="Nom" size ="30"/><br />
+	                        <input name="nom_utilisateur" type="text" id="nom_utilisateur" placeholder="Pseudo" size="30"/><br/>
+                        </p>
+	                    <input type="password" name="mdp1" id="mdp1" placeholder="Mot de passe" size ="30" ><br />
+	                    <input type="password" name="mdp2" id="mdp2" placeholder="Confirmer le mot de passe" size="30"/>
+	                </fieldset>
 
-	<fieldset><legend>Identifiants</legend>
-	<label for="prenom">* Prénom :</label>  <input name="prenom" type="text" id="prenom" /><br />
-	<label for="nom">* Nom :</label>  <input name="nom" type="text" id="nom" /><br />
-	<label for="nom_utilisateur">* Nom d\'utilisateur :</label>  <input name="nom_utilisateur" type="text" id="nom_utilisateur" /><br />
-	<label for="mdp1">* Mot de Passe :</label><input type="password" name="mdp1" id="mdp1" /><br />
-	<label for="mdp2">* Confirmer le mot de passe :</label><input type="password" name="mdp2" id="mdp2" />
-	</fieldset>
-	<fieldset><legend>Contacts</legend>
-	<label for="mail">* Votre adresse Mail :</label><input type="text" name="mail" id="mail" /><br />
-	<label for="tel">Numéro de téléphone :</label><input type="text" name="tel" id="tel" /><br />
-	</fieldset>
-	</fieldset>
-	<p>Les champs précédés d\'un * sont obligatoires</p>
-	<p><input type="submit" value="S\'inscrire" /></p></form>
-	</div>
-	</body>
+	                <fieldset><legend>Contacts</legend>
+	                    <label for="mail">* Votre adresse Mail :</label><input type="text" name="mail" id="mail" /><br />
+	                    <label for="tel">Numéro de téléphone :</label><input type="text" name="tel" id="tel" /><br />
+	                </fieldset>
+
+	                <p>Les champs précédés d\'un * sont obligatoires</p>
+	                <p><class="submit"> <button type="submit">S\'inscrire </button></p>
+                </form>
+	        </div>
+	    </body>
 	</html>';
 }
 else //On est dans le cas traitement
@@ -37,8 +47,7 @@ else //On est dans le cas traitement
     $email_erreur2 = NULL;
 	$tel_erreur = NULL;
 }
-
-//On r�cup�re les variables
+/*//On r�cup�re les variables
 $i = 0;
 $temps = time();
 $nom_utilisateur=$_POST['nom_utilisateur'];
@@ -58,7 +67,7 @@ if(!$pnom_utilisateur_free)
 	$i++;
 }
 
-if (strlen($pseudo) < 3 || strlen($pseudo) > 15)
+if (strlen($pseudo) < 5 || strlen($pseudo) > 15)
 {
 	$pseudo_erreur2 = "Votre pseudo est soit trop grand, soit trop petit";
 	$i++;
@@ -131,5 +140,5 @@ else
     echo'<p>'.$tel_erreur.'</p>';
 
     echo'<p>Cliquez <a href="./register.php">ici</a> pour recommencer</p>';
-}
+}*/
 ?>

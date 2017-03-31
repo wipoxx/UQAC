@@ -1,0 +1,71 @@
+
+body{ 
+	background:#f8f8f8;
+	font: medium, Trebuchet MS, Arial, Helvetica, Sans-Serif;
+	color:#333;
+	line-height:160%;
+	margin:0;
+	padding:0;
+	text-align:center;
+	}
+
+h1{
+	font-size:200%;
+	font-weight:normal;
+	}		
+		
+input, textarea{
+	font:100% Trebuchet MS, Arial, Helvetica, Sans-Serif;
+	line-height:160%;
+	color:#333;
+	}				
+p{
+	margin:1em 0;
+	}
+
+fieldset{
+	margin:0;
+	padding-top:.5em;
+	border:none;	
+	border-top:1px solid #f1f1f1;
+	}		
+legend{
+	background:#fff;
+	padding:0 5px;
+	font-style:italic;
+	}	
+p{
+	clear:both;
+	margin:.5em 0;
+	overflow:hidden;
+	}	
+	
+input, textarea{	
+	margin:0;	
+	width: auto;
+	border:1px solid #ddd;		
+	padding:3px 0px 3px 25px;
+	}		
+	
+	
+input#prenom{background:#fff url(form_name.gif) no-repeat 5px 50%;}
+input#nom{background:#fff url(form_name.gif) no-repeat 5px 50%;}
+input#nom_utilisateur{background:#fff url(form_name.gif) no-repeat 5px 50%;}
+input#mail{background:#fff url(form_email.gif) no-repeat 5px 50%;}
+input#mdp1{background:#fff url(cle.gif) no-repeat 5px 50%;}
+input#mdp2{background:#fff url(cle.gif) no-repeat 5px 50%;}
+input#tel{background:#fff url(tel.gif) no-repeat 5px 50%;}
+
+button{
+	height:28px;
+	line-height:28px;		
+	border-top:1px solid #999;
+	border-left:1px solid #999;
+	border-right:1px solid #333;
+	border-bottom:1px solid #333;
+	color:#333;
+	cursor:pointer;
+	text-align:left;
+	font-size: medium;
+	font-weight:bold;
+	}				
