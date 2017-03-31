@@ -21,4 +21,7 @@ define('_MODELS_', 'models/');
 
 //Templates
 define('_TPL_', 'templates/');
+
+//Bases de données
+define('_BDD_', 'bdd/');
 ?>

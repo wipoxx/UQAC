@@ -1,9 +1,9 @@
 #form_inscription{
     
-    display: flex;
+    /*display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: center;
+    align-items: center;*/
 }
 
 input, span {

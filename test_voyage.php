@@ -2,12 +2,14 @@
 
 //fichier pour tester si les classes voyagen trajet et étape fonctionnent
 include('config_init.php');
-require_once(_CTRL_ . 'voyage.class.php');
-require_once(_CTRL_ . 'trajet.class.php');
-require_once(_CTRL_ . 'etape.class.php');
-require_once(_CTRL_ . 'usager.class.php');
+require_once(_MODELS_ . 'voyage.class.php');
+require_once(_MODELS_ . 'trajet.class.php');
+require_once(_MODELS_ . 'etape.class.php');
+require_once(_MODELS_ . 'usager.class.php');
+require_once(_BDD_ . 'BDDLocale.class.php');
 
-$c1 = new Usager('Jean-Paul', 'Sartre', 'jpLaMalice', 'mdpTropSecure', 'mdpTropSecure', 'mail@mail.com', '999-999-999');
+
+/*$c1 = new Usager('Jean-Paul', 'Sartre', 'jpLaMalice', 'mdpTropSecure', 'mdpTropSecure', 'mail@mail.com', '999-999-999');
 $p1 = new Usager('Pape', 'Chaussette', 'godIsEverything', 'laFoi', 'laFoi', 'papipou@bible.vati', '23');
 $p2 = new Usager('Lucifer', 'Morningstar', '3evil5you', 'enfer', 'enfer', 'diable@enfer.me', '666');
 $p3 = new Usager('Ludwig', 'van Beethoven', 'iCantHearYou', 'soGood', 'soGood', 'pompompompom@music.au', '1770');
@@ -34,6 +36,43 @@ $voyage->ajoutPassager($p1, array($t2, $t3));
 $voyage->ajoutPassager($p2, array($t1,$t2, $t3));
 $voyage->ajoutPassager($p3, array($t2, $t3));
 $voyage->ajoutPassager($p1, array($t2, $t3));
+*/
 
+//$bdd = BDDLocale::getInstance();
+//$res = '';
+//$bdd->get('SELECT * FROM usager WHERE IdUsager=1', $res);
+//echo $re
 
 //$voyage->rechercheItineraire('Chaumont', 'Besançon');
+
+
+/*-------- Inscription
+$data = array(
+                'prenomUsager' => 'Ludwig', 
+                'nomUsager' => 'van Beethoven', 
+                'pseudoUsager' => 'iCantHearYou', 
+                'mdpUsager1' => 'soGood', 
+                'mdpUsager2' => 'soGood', 
+                'emailUsager' => 'pompompompom@music.au', 
+                'numTelUsager' => '1770'
+                );
+
+if ($data['mdpUsager1'] == $data['mdpUsager2']) {
+    $p3 = new Usager($data);
+}*/
+
+// --------- Connexion
+//√ $p3 = Usager::connexion('iCantHearYou', 'soGood');
+//var_dump($p3);
+//$p3->save();
+
+
+
+
+
+
+
+
+
+
+
