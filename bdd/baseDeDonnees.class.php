@@ -115,10 +115,8 @@ class BaseDeDonnees
 	{
 		$valRet = false;
 						
-		if($this->link)
-		{
-            if(count($params))
-            {
+		if($this->link) {
+            if(count($params)) {
 			    $query = $this->link->prepare($requete);
 
                 foreach($params as $param)
@@ -127,10 +125,7 @@ class BaseDeDonnees
                 }
 
                 $valRet = $query->execute() !== false;
-                //var_dump($query);
-            }
-            else
-            {
+            } else {
                 $valRet = $this->link->query($requete) !== false;
             }
 		}

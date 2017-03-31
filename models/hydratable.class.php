@@ -11,7 +11,7 @@ class Hydratable
      */
     public function __construct($data)
     {
-        $this->hydrate($data);   
+        $this->hydrate($data);
     }
 
     /**
@@ -23,9 +23,9 @@ class Hydratable
         foreach($data as $property => $value)
         {
             $method = 'set'.ucfirst($property);
-
-            if(method_exists($this, $method))
+            if(method_exists($this, $method)) {
                 $this->$method($value);
+            }
         }
     }
 }

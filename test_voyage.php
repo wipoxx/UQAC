@@ -39,17 +39,39 @@ $voyage->ajoutPassager($p1, array($t2, $t3));
 */
 
 //$bdd = BDDLocale::getInstance();
-//var_dump($bdd);
 //$res = '';
 //$bdd->get('SELECT * FROM usager WHERE IdUsager=1', $res);
-//echo $res;
+//echo $re
 
 //$voyage->rechercheItineraire('Chaumont', 'Besançon');
 
 
+/*-------- Inscription
+$data = array(
+                'prenomUsager' => 'Ludwig', 
+                'nomUsager' => 'van Beethoven', 
+                'pseudoUsager' => 'iCantHearYou', 
+                'mdpUsager1' => 'soGood', 
+                'mdpUsager2' => 'soGood', 
+                'emailUsager' => 'pompompompom@music.au', 
+                'numTelUsager' => '1770'
+                );
 
-$p3 = new Usager('Ludwig', 'van Beethoven', 'iCantHearYou', 'soGood', 'soGood', 'pompompompom@music.au', '1770');
-$p3->save();
+if ($data['mdpUsager1'] == $data['mdpUsager2']) {
+    $p3 = new Usager($data);
+}*/
+
+// --------- Connexion
+//√ $p3 = Usager::connexion('iCantHearYou', 'soGood');
+//var_dump($p3);
+//$p3->save();
+
+
+
+
+
+
+
 
 
 
