@@ -98,11 +98,11 @@ class Usager extends Hydratable
     }
     
     //Connexion d'un usager : crée les variables de session
-   public static function connexion(string $pseudoUsager, string $mdpUsager) {
+   public static function connexion(string $pseudo, string $mdp) {
         
         $query = "SELECT * FROM usager WHERE PseudoUsager = :pseudoUsager AND MdpUsager = :mdpUsager;";
-        $parameters = array( array('name' => ':pseudoUsager', 'value' => $pseudoUsager, 'type' => 'string'),
-                             array('name' => ':mdpUsager', 'value' => $mdpUsager, 'type' => 'string'));
+        $parameters = array( array('name' => ':pseudoUsager', 'value' => $pseudo, 'type' => 'string'),
+                             array('name' => ':mdpUsager', 'value' => $mdp, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();
 
@@ -124,9 +124,9 @@ class Usager extends Hydratable
             }
         } else {
             $resultat = 'Erreur de connexion : recommencez.';
-        }*/
+        }
         
-        return $resultat;
+        return $resultat;*/
     }
    /* public function annulerVoyage($voyage) {
         //if ($role == )
@@ -193,7 +193,7 @@ class Usager extends Hydratable
         $this->idUsager = $value;
     }
     public function getIdUsager() {
-        return self::$idUsager;
+        return $this->idUsager;
     }
     public function setPrenomUsager($value) {
         $this->prenomUsager = $value;

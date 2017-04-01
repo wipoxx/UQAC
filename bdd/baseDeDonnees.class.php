@@ -132,6 +132,35 @@ class BaseDeDonnees
 		
 		return $valRet;
 	}
+    
+    /**
+	 * Exécute une requete INSERT et retourne l'id de l'objet inséré
+	 * @param $requete Requete à exécuter
+     * @param $params Liste de paramètres à intégrer à la requete ( ['name' => 'nom parametre', 'value' => 'valeur du paramètre', 'type' => 'type du paramètre'] )
+     * @return l'id de l'objet
+	 */
+    public function insert($requete, $params = array())
+	{
+		$valRet = false;
+						
+		if($this->link) {
+            if(count($params)) {
+			    $query = $this->link->prepare($requete);
+
+                foreach($params as $param)
+                {
+                    $query->bindValue($param['name'], $param['value'], $this->getPDOType($param['type']));
+                }
+
+                 $valRet = $query->execute() !== false;
+                return $this->link->lastInsertId();
+            } else {
+                $valRet = $this->link->query($requete) !== false;
+            }
+		}
+		
+		return $valRet;
+	}
 
     /**
      * Retourne le type PDO corespondant au type demandé

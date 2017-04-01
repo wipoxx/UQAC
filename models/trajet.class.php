@@ -3,95 +3,95 @@ require_once(_MODELS_.'hydratable.class.php');
 require_once(_BDD_ . 'BDDLocale.class.php');
 
 class Trajet extends Hydratable{
+    private $idTrajetElementaire;
+    private $idVoyage;
+    private $nbPlaces;
     private $villeDepart;
     private $heureDepart;
     private $villeArrivee;
     private $heureArrivee;
-    private $nbPlacesTrajet;
-    private $idVoyage;
     private $lPassagers = array();
-    
-    /*public function __construct(Etape $depart, Etape $arrivee, $nbPlaces) {
-        $this->etapeDepart = $depart;
-        $this->etapeArrivee = $arrivee;
-        $this->nbPlacesTrajet = $nbPlaces;
-    }*/
+
     
     public function __construct($data) {
         parent::__construct($data);
     }
 
-    //Fonction d'enregistrement du trajet (ajoute ou modifie en fonction de la valeur de l'id)
+    //Fonction d'enregistrement (ajoute ou modifie en fonction de la valeur de l'id)
     public function save()
     {
-        if($this->id)
+        if($this->idTrajetElementaire)
             $this->update();
         else
             $this->insert();
     }
 
-
     //Ajoute le trajet à la base de données
     private function insert()
     {
-        $query = "INSERT INTO trajetelementaire SET IdVoyage = :idVoyage, VilleDepart = :villeDepart, HeureDepart = :heureDepart, VilleArrivee = :villeArrivee, HeureArrivee = :heureArrivee, NbPlacesTrajet = :nbPlacesTrajet;";
+        $query = "INSERT INTO trajetelementaire (IdVoyage, NbPlaces, VilleDepart, HeureDepart, VilleArrivee, HeureArrivee) VALUES (:idVoyage, :nbPlaces, :villeDepart, :heureDepart, :villeArrivee, :heureArrivee);";
         $parameters = array(
-            array( 'name' => ':idVoyage', 'value' => $this->getVoyage(), 'type' => 'string'),
-            array( 'name' => ':villeDepart', 'value' => $this->villeDepart(), 'type' => 'string'),
-            array( 'name' => ':heureDepart', 'value' => $this->heureDepart(), 'type' => 'time'),
-            array( 'name' => ':villeArrivee', 'value' => $this->villeArrivee(), 'type' => 'string'),
-            array( 'name' => ':heureArrivee', 'value' => $this->heureArrivee(), 'type' => 'time'),
-            array( 'name' => ':nbPlacesTrajet', 'value' => $this->getNbPlacesTrajet(), 'type' => 'int')
+            array( 'name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'),
+            array( 'name' => ':nbPlaces', 'value' => $this->nbPlaces, 'type' => 'int'),
+            array( 'name' => ':villeDepart', 'value' => $this->villeDepart, 'type' => 'string'),
+            array( 'name' => ':heureDepart', 'value' => $this->heureDepart, 'type' => 'time'),
+            array( 'name' => ':villeArrivee', 'value' => $this->villeArrivee, 'type' => 'string'),
+            array( 'name' => ':heureArrivee', 'value' => $this->heureArrivee, 'type' => 'time')
         );
-
         $db = BDDLocale::getInstance();
         $db->execute($query, $parameters);
     }
 
-    /**
-     * Modifie le trajet dans la base de données
-     */
+    //Modifie le trajet dans la base de données
     private function update()
     {
-        $query = "UPDATE trajetelementaire SET IdVoyage = :idVoyage, VilleDepart = :villeDepart, HeureDepart = :heureDepart, VilleArrivee = :villeArrivee, HeureArrivee = :heureArrivee, NbPlacesTrajet = :nbPlacesTrajet;";
+        $query = "UPDATE trajetelementaire SET IdVoyage = :idVoyage, NbPlaces = :nbPlaces, VilleDepart = :villeDepart, HeureDepart = :heureDepart, VilleArrivee = :villeArrivee, HeureArrivee = :heureArrivee WHERE IdTrajetElementaire = :idTrajetElementaire;";
         $parameters = array(
-            array( 'name' => ':idVoyage', 'value' => $this->getVoyage(), 'type' => 'string'),
-            array( 'name' => ':villeDepart', 'value' => $this->villeDepart(), 'type' => 'string'),
-            array( 'name' => ':heureDepart', 'value' => $this->heureDepart(), 'type' => 'time'),
-            array( 'name' => ':villeArrivee', 'value' => $this->villeArrivee(), 'type' => 'string'),
-            array( 'name' => ':heureArrivee', 'value' => $this->heureArrivee(), 'type' => 'time'),
-            array( 'name' => ':nbPlacesTrajet', 'value' => $this->getNbPlacesTrajet(), 'type' => 'int')
+            array( 'name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'),
+            array( 'name' => ':nbPlaces', 'value' => $this->nbPlaces, 'type' => 'int'),
+            array( 'name' => ':villeDepart', 'value' => $this->villeDepart, 'type' => 'string'),
+            array( 'name' => ':heureDepart', 'value' => $this->heureDepart, 'type' => 'time'),
+            array( 'name' => ':villeArrivee', 'value' => $this->villeArrivee, 'type' => 'string'),
+            array( 'name' => ':heureArrivee', 'value' => $this->heureArrivee, 'type' => 'time')
         );
-
         $db = BDDLocale::getInstance();
         $db->execute($query, $parameters);
     }
 
-    /**
-     * Supprime le trajet de la base de données
-     */
+    //Supprime le trajet de la base de données
     public function remove()
     {
-        $query = "DELETE FROM trajetelementaire  WHERE IdTrajetElementaire = :id;";
+        $query = "DELETE FROM trajetelementaire  WHERE IdTrajetElementaire = :idTrajetElementaire;";
         $parameters = array(
-            array( 'name' => ':id', 'value' => $this->id, 'type' => 'int')
+            array( 'name' => ':idTrajetElementaire', 'value' => $this->idTrajetElementaire, 'type' => 'int')
         );
 
         $db = BDDLocale::getInstance();
         $db->execute($query, $parameters);
     }
-
     
+   /* public static function getTrajet($ville) {
+        $query = "SELECT * FROM voyage WHERE IdUsager = :idUsager;";
+        $parameters = array( array('name' => ':idUsager', 'value' => $idUsager, 'type' => 'string'));
+        $results = null;
+        $db = BDDLocale::getInstance();
+
+        if($db->get($query, $results, $parameters))
+        {
+            $lVoyages = array();
+            foreach($results as $result) {
+                $lVoyages[] = new Voyage($result);
+            }
+            return $lVoyages;
+        }
+    }*/
+ 
     public function __toString() {
         $res = '';
-        $res .= 'Départ :<br />' . $this->etapeDepart . '<br />';
-        $res .= 'Arrivée :<br />' . $this->etapeArrivee . '<br />';
+        $res .= 'Départ :<br />' . $this->villeDepart . ' à ' .$this->heureDepart. '<br />';
+        $res .= 'Arrivée :<br />' . $this->villeArrivee . ' à ' .$this->heureArrivee. '<br />';
         return $res;
     }
-    
-    /*public function getVilles() {
-        return array($this->etapeDepart->getVille(), $this->etapeArrivee->getVille());
-    }*/
     
     public function ajouterPassager(Usager $passager) {
         if ($this->nbPlacesTrajet > 1) {
@@ -102,15 +102,14 @@ class Trajet extends Hydratable{
             echo 'pas assez de place dans le trajet';
         }
     }
-    
-    
+       
     //Accesseurs
-    public function setId($value) {
-        $this->id = $value;
+    public function setIdTrajetElementaire($value) {
+        $this->idTrajetElementaire = $value;
     }
     
-    public function getId() {
-        return $this->id;
+    public function getIdTrajetElementaire() {
+        return $this->idTrajetElementaire;
     }
     
    public function setIdVoyage($value) {
@@ -153,12 +152,12 @@ class Trajet extends Hydratable{
         return $this->heureArrivee;
     }   
     
-   public function setNbPlacesTrajet($value) {
-        $this->nbPlacesTrajet = $value;
+   public function setNbPlaces($value) {
+        $this->nbPlaces = $value;
     }
     
-    public function getNbPlacesTrajet() {
-        return $this->nbPlacesTrajet;
+    public function getNbPlaces() {
+        return $this->nbPlaces;
     }   
     
 }
