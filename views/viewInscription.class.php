@@ -6,7 +6,7 @@ class ViewInscription extends View {
     }
 
     protected function afficherBody() {
-        include(_TPL_ . 'inscription.php');
+        include(_TPL_ . 'register.php');
     }
 }
 ?>

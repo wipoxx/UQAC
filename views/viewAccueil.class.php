@@ -6,7 +6,7 @@ class ViewAccueil extends View {
     }
 
     protected function afficherBody() {
-        include(_TPL_ . 'accueil.html');
+        include(_TPL_ . 'accueil.php');
     }
 }
 ?>
