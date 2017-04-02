@@ -6,7 +6,6 @@ body{
 	line-height:160%;
 	margin:0;
 	padding:0;
-    text-align:center;
 }
 div{
     text-align:center;
@@ -23,7 +22,7 @@ h2{
 h3{
     font:100% Arial, Helvetica, Sans-Serif;
 }	
-input, textarea, liste{
+input, textarea, liste,select{
 	font:100% Trebuchet MS, Arial, Helvetica, Sans-Serif;
 	line-height:160%;
 	color:#333;
@@ -58,8 +57,15 @@ profil{
     width : 100px;
 }
 
-img{
-    border : 3px solid #cdcdcd;
+presentation{
+    float : left;
+    margin : 3%;
+}
+
+description{
+    float :none;
+    font:150% Trebuchet MS, Arial, Helvetica, Sans-Serif;
+    text-align: left;
 }
 
 
@@ -70,7 +76,6 @@ input, textarea{
 	padding:3px 0px 3px 25px;
 	}		
 	
-	
 input#prenom{background:#fff url(form_name.gif) no-repeat 5px 50%;}
 input#nom{background:#fff url(form_name.gif) no-repeat 5px 50%;}
 input#nom_utilisateur{background:#fff url(form_name.gif) no-repeat 5px 50%;}
@@ -79,6 +84,9 @@ input#mdp1{background:#fff url(cle.gif) no-repeat 5px 50%;}
 input#mdp2{background:#fff url(cle.gif) no-repeat 5px 50%;}
 input#tel{background:#fff url(tel.gif) no-repeat 5px 50%;}
 textarea#preference{background:#fff url(preference.gif) no-repeat 5px 6px;}
+input#depart{background:#fff url(depart.gif) no-repeat 5px 50%;}
+input#arrivee{background:#fff url(arrivee.gif) no-repeat 5px 50%;}
+input#villePassage{background:#fff url(bus.gif) no-repeat 5px 50%;}
 
 button{
 	height:28px;
@@ -92,4 +100,18 @@ button{
 	text-align:left;
 	font-size: medium;
 	font-weight:bold;
-	}				
+}
+
+input#image-button{
+    background: #f8f8f8 url('loupe.gif') no-repeat;
+    padding-left: 30px;
+    height: 25px;
+    border : none;
+}		
+
+input#image-add{
+    background: #f8f8f8 url('bus.gif') no-repeat;
+    padding-left: 30px;
+    height: 16px;
+    border : none;
+}		

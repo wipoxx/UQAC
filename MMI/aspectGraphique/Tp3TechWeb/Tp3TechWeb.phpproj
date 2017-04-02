@@ -19,12 +19,14 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ajoutVoyage.php" />
     <Compile Include="connexion.php" />
     <Compile Include="constants.php" />
     <Compile Include="Deconnexion.php" />
     <Compile Include="functions.php" />
     <Compile Include="index.php" />
     <Compile Include="profil.php" />
+    <Compile Include="recherche.php" />
     <Compile Include="register.php" />
   </ItemGroup>
   <ItemGroup>

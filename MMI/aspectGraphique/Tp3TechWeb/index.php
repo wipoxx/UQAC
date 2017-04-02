@@ -23,8 +23,12 @@ if (!isset($_POST['pseudo']))
 	                </fieldset>
                     <p><class="submit"> <button type="submit">Connexion </button></p>
                 </form>
-	            <p><a href="./register.php">Pas encore inscrit ?</a></br>
-                <a href="./profil.php">Consulter un profil utilisateur ?</a></p>
+	            <p>
+                    <a href="./register.php">Pas encore inscrit ?</a></br>
+                    <a href="./profil.php">Consulter un profil utilisateur ?</a></br>
+                    <a href="./recherche.php">Rechercher un voyage</a></br>
+                    <a href="./ajoutVoyage.php">Ajouter un voyage</a>
+                </p>
             </div>
         </body>
     </html>';

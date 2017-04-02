@@ -59,9 +59,9 @@ else //On est dans le cas traitement
     $email_erreur2 = NULL;
 	$tel_erreur = NULL;
 }
-/*//On r�cup�re les variables
-$i = 0;
-$temps = time();
+
+
+
 $nom_utilisateur=$_POST['nom_utilisateur'];
 $mail = $_POST['mail'];
 $mdp = md5($_POST['mdp1']);
@@ -91,7 +91,7 @@ if ($mdp != $mdp2 || empty($mdp2) || empty($mdp))
 	$mdp_erreur = "Votre mot de passe et votre confirmation diff�rent, ou sont vides";
 	$i++;
 }
- //V�rification de l'adresse mail
+ //Vérification de l'adresse mail
 $query=$db->prepare('SELECT COUNT(*) AS nbr FROM membre_nom_utilisateur WHERE membre_mail =:mail');
 $query->bindValue(':mail',$email, PDO::PARAM_STR);
 $query->execute();
@@ -100,10 +100,10 @@ $query->CloseCursor();
 
 if(!$mail_free)
 {
-	$email_erreur1 = "Votre adresse email est d�j� utilis�e par un membre";
+	$email_erreur1 = "Votre adresse email est déjà utilisée par un membre";
 	$i++;
 }
-//On v�rifie la forme maintenant
+//On vérifie la forme maintenant
 if (!preg_match("#^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$#", $mail) || empty($mail))
 {
 	$mail_erreur2 = "Votre adresse E-Mail n'a pas un format valide";
@@ -118,23 +118,25 @@ if(!!preg_match('#^0[0-9]([ .-]?[0-9]{2}){4}$#', $tel) || empty($tel))
 
 if ($i==0)
 {
-echo'<h1>Inscription termin�e</h1>';
+echo'<h1>Inscription terminée</h1>';
 echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['nom_utilisateur'])).' vous �tes maintenant inscrit</p>
 <p>Cliquez <a href="./index.php">ici</a> pour revenir � la page d accueil</p>';
 
 
 $query=$db->prepare('INSERT INTO membres (prenom, nom, nom_utilisateur, mpd, mail, tel)
 VALUES (:prenom, :nom, :nom_utilisateur; :mdp, :mail, :tel)');
-$query->bindValue(':prenom', $prenom, PDO::PARAM_STR);
-$query->bindValue(':nom', $nom, PDO::PARAM_INT);
-$query->bindValue(':nom_utilisateur', $nom_utilisateur, PDO::PARAM_STR);
-$query->bindValue(':mdp', $mdp, PDO::PARAM_STR);
-$query->bindValue(':mail', $mail, PDO::PARAM_STR);
-$query->bindValue(':tel', $tel, PDO::PARAM_STR);
+$query->bindValue(':prenomUsager', $prenom, PDO::PARAM_STR);
+$query->bindValue(':nomUsager', $nom, PDO::PARAM_INT);
+$query->bindValue(':pseudoUsager', $nom_utilisateur, PDO::PARAM_STR);
+$query->bindValue(':mdpUsager1', $mdp, PDO::PARAM_STR);
+$query->bindValue(':mdpUsager2', $mdp2, PDO::PARAM_STR);
+$query->bindValue(':emailUsager', $mail, PDO::PARAM_STR);
+$query->bindValue(':numTelUsager', $tel, PDO::PARAM_STR);
 
     $query->execute();
 
-//Et on d�finit les variables de sessions
+
+//Et on définit les variables de sessions
     $_SESSION['nom_utilisateur'] = $nom_utilisateur;
     $_SESSION['id'] = $db->lastInsertId(); ;
     $query->CloseCursor();
@@ -152,5 +154,5 @@ else
     echo'<p>'.$tel_erreur.'</p>';
 
     echo'<p>Cliquez <a href="./register.php">ici</a> pour recommencer</p>';
-}*/
+}
 ?>
