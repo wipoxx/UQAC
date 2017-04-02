@@ -4,6 +4,8 @@
 include('config_init.php');
 require_once(_MODELS_ . 'voyage.class.php');
 require_once(_MODELS_ . 'trajet.class.php');
+require_once(_MODELS_ . 'trajetElementaire.class.php');
+require_once(_MODELS_ . 'reservation.class.php');
 require_once(_MODELS_ . 'preference.class.php');
 require_once(_MODELS_ . 'usager.class.php');
 require_once(_BDD_ . 'BDDLocale.class.php');
@@ -77,13 +79,13 @@ if ($data['mdpUsager1'] == $data['mdpUsager2']) {
 //$preference = Preference::get(1, 1, 2);
 //$preference->save();
 
-$v1 = array(
+/*$v1 = array(
                 'idUsager' => 21,
                 'nbPlaces' => 3,
                 'idPreference' => 1,
                 'dateDepart' => '2017-04-02'
             );  
-
+*/
 //$voyage = new Voyage($v1);
 //$voyage = Voyage::getVoyagesDeUsager(21);
 //$voyage->save();
@@ -165,10 +167,20 @@ for ($i = 0 ; $i < $taille ; ++$i) {
 
 $voyage = Voyage::get(1);
 //$voyage->getVillesDepart();
-$voyage->getVoyagesApresDate('2017-04-06 15:00:00', 'Dijon', 'Lons-Le-Saunier');
+$v1 = $voyage->getVoyagesApresDate('2017-04-06', 'Dijon', 'Lons-Le-Saunier');
 echo '<br /><br />';
-$voyage->getVoyagesApresDate('2017-04-06', 'Tamere', 'Homer');
+$v2 = $voyage->getVoyagesApresDate('2017-04-06', 'Tamere', 'Homer');
 echo '<br /><br />';
-$voyage->getVoyagesApresDate('2017-04-06', 'Chaumont', 'Homer');
+$v3 = $voyage->getVoyagesApresDate('2017-04-06', 'Chaumont', 'Homer');
 echo '<br /><br />';
-$voyage->getVoyagesApresDate('2017-04-01', 'Dijon', 'Besançon');
+$v4 = $voyage->getVoyagesApresDate('2017-04-10', 'Dijon', 'Besançon');
+
+foreach($v1 as $lTrajets) {
+    foreach($lTrajets as $trajet1) {
+        
+    echo $trajet1 ;
+    echo '<br />';
+    }
+    echo '<br />';
+    echo '<br />';
+}

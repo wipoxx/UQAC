@@ -1,5 +1,5 @@
 <?php
-require_once(_MODELS_ . 'trajet.class.php');
+require_once(_MODELS_ . 'trajetElementaire.class.php');
 require_once(_MODELS_ . 'usager.class.php');
 require_once(_MODELS_ . 'preference.class.php');
 require_once(_MODELS_.'hydratable.class.php');
@@ -12,7 +12,6 @@ class Voyage extends Hydratable{
     private $idVoyage;
     private $idUsager;  //Le conducteur
     private $idPreference;
-    //private $preference;
     private $nbPlaces;
     private $dateDepart;
     
@@ -107,14 +106,11 @@ class Voyage extends Hydratable{
     public static function getVoyagesApresDate($date, $villeDep, $villeArr) {
         $dateMin = date('Y/m/d H:i:s', abs(strtotime($date) - 28800));
         $dateMax = date('Y/m/d H:i:s', abs(strtotime($date) + 43200));
-        
-        echo $dateMin. ' ';
-        echo $dateMax;
-        echo '<br />';
-        
-        $query = "SELECT * FROM voyage WHERE DateDepart BETWEEN :date1 AND :date2;";
-        $parameters = array( array('name' => ':date1', 'value' => $dateMin, 'type' => 'string'),
-                             array('name' => ':date2', 'value' => $dateMax, 'type' => 'string'));
+        //$query = "SELECT * FROM voyage WHERE DateDepart BETWEEN :date1 AND :date2;";
+        $query = "SELECT * FROM voyage WHERE DateDepart >= :date;";
+        /*$parameters = array( array('name' => ':date1', 'value' => $dateMin, 'type' => 'string'),
+                             array('name' => ':date2', 'value' => $dateMax, 'type' => 'string'));*/
+        $parameters = array( array('name' => ':date', 'value' => $date, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();
 
@@ -123,19 +119,23 @@ class Voyage extends Hydratable{
             $lVoyages = array();
             foreach($results as $result) {
                 $voyage = new Voyage($result);
-                if($voyage->rechercheTrajet($villeDep, $villeArr)) {
-                    $lVoyages[] = $voyage;
+                //Récupère l'id des trajets elt contenant la ville de départ ou la ville d'arrivée dans un même voyage
+                $lIdDepArr = $voyage->rechercheTrajet($villeDep, $villeArr); 
+                $lIdTrajets = array();
+                if($lIdDepArr != null) {
+                    //Récupère tous les trajets elt pour réaliser le trajet demandé par l'usager
+                    $lTrajets[] = TrajetElementaire::getWithId($lIdDepArr[0], $lIdDepArr[1]);
                 }
             }
-            return $lVoyages;
+            return $lTrajets;
         }
     }
 
     
     //Récupère toutes les villes de départ + heure dans les trajets du voyage
     private function getVillesDepart() {
-        $query = "SELECT villeDepart, heureDepart FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
-        $parameters = array( array('name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'));
+        $query = "SELECT idTrajetElementaire, villeDepart FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
+        $parameters = array( array('name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'int'));
         $results = null;
         $db = BDDLocale::getInstance();
         if($db->get($query, $results, $parameters))
@@ -146,7 +146,7 @@ class Voyage extends Hydratable{
         
     //Récupère toutes les villes d'arrivée + heure dans les trajets du voyage
     private function getVillesArrivee() {
-        $query = "SELECT villeArrivee FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
+        $query = "SELECT idTrajetElementaire,villeArrivee FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
         $parameters = array( array('name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();
@@ -161,17 +161,19 @@ class Voyage extends Hydratable{
     private function rechercheTrajet($villeDep, $villeArr) {
         $lDep = $this->getVillesDepart();
         $lArr = $this->getVillesArrivee();
-        
+        $res = null;
         for ($i = 0 ; $i < count($lDep) ; $i++) {
             if($villeDep == $lDep[$i]['villeDepart']) {
                 for ($j = $i ; $j < count($lArr) ; $j++) {  
                     //Permet de ne regarder que les villes qui se trouvent après dans le voyage
                     if ($villeArr == $lArr[$j]['villeArrivee']) {
-                         return true;
+                        //retourne l'id du trajetElt de départ et l'id de trajetElt d'arrivée
+                         $res=  array($lDep[$i]['idTrajetElementaire'], $lArr[$j]['idTrajetElementaire']);
                     }
                 }
             }
-        } 
+        }
+        return $res;
     }
     
     //Ajouter un trajet à la liste

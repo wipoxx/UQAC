@@ -5,6 +5,7 @@ require_once(_BDD_ . 'BDDLocale.class.php');
 class Reservation extends Hydratable
 {
     //Clé primaire : idUsager & idTrajet
+    private $idReservation;
     private $idUsager;
     private $idTrajet;
     private $nbPlaces;  //Nb place que l'usager réserve
@@ -17,7 +18,7 @@ class Reservation extends Hydratable
     //Fonction d'enregistrement (ajoute ou modifie en fonction de la valeur de l'id)
     public function save()
     {
-        if($this->idUsager && $this->idTrajet)
+        if($this->idReservation)
             $this->update();
         else
             $this->insert();
@@ -39,11 +40,12 @@ class Reservation extends Hydratable
     //Modifie dans la base de données
     private function update()
     {
-        $query = "UPDATE reservation SET IdUsager = :idUsager, IdTrajet = :idTrajet, NbPlaces = :nbPlaces;";
+        $query = "UPDATE reservation SET IdUsager = :idUsager, IdTrajet = :idTrajet, NbPlaces = :nbPlaces WHERE IdReservation = :idReservation;";
         $parameters = array(
             array( 'name' => ':idUsager', 'value' => $this->getIdUsager(), 'type' => 'int'),
             array( 'name' => ':idTrajet', 'value' => $this->getIdTrajet(), 'type' => 'int'),
-            array( 'name' => ':nbPlaces', 'value' => $this->getNbPlaces(), 'type' => 'int')
+            array( 'name' => ':nbPlaces', 'value' => $this->getNbPlaces(), 'type' => 'int'),
+            array( 'name' => ':idReservation', 'value' => $this->idReservation, 'type' => 'int')
         );
 
         $db = BDDLocale::getInstance();
@@ -53,10 +55,9 @@ class Reservation extends Hydratable
     //Supprime de la base de données
     public function remove()
     {
-        $query = "DELETE FROM reservation  WHERE IdUsager = :idUsager AND IdTrajet = :idTrajet;";
+        $query = "DELETE FROM reservation  WHERE IdReservation = :idReservation;";
         $parameters = array(
-            array( 'name' => ':idUsager', 'value' => $this->idUsager, 'type' => 'int'),
-            array( 'name' => ':idTrajet', 'value' => $this->getIdTrajet(), 'type' => 'int')
+            array( 'name' => ':idReservation', 'value' => $this->idReservation, 'type' => 'int')
         );
 
         $db = BDDLocale::getInstance();
@@ -64,48 +65,29 @@ class Reservation extends Hydratable
     }
     
 //------------- Accesseurs
-
+    public function setIdReservation($value) {
+        $this->idReservation = $value;
+    }
+    public function getIdReservation() {
+        return $this->idReservation;
+    }
     public function setIdUsager($value) {
         $this->idUsager = $value;
     }
     public function getIdUsager() {
         return $this->idUsager;
     }
-    public function setPrenomUsager($value) {
-        $this->prenomUsager = $value;
+    public function setIdTrajet($value) {
+        $this->idTrajet = $value;
     }
-    public function getPrenomUsager() {
-        return $this->prenomUsager;
+    public function getIdTrajet() {
+        return $this->idTrajet;
     }
-    public function setNomUsager($value) {
-        $this->nomUsager = $value;
+    public function setNbPlaces($value) {
+        $this->nbPlaces = $value;
     }
-    public function getNomUsager() {
-        return $this->nomUsager;
-    }
-    public function setPseudoUsager($value) {
-        $this->pseudoUsager = $value;
-    }
-    public function getPseudoUsager() {
-        return $this->pseudoUsager;
-    }
-    public function setEmailUsager($value) {
-        $this->emailUsager = $value;
-    }
-    public function getEmailUsager() {
-        return $this->emailUsager;
-    }
-    public function setMdpUsager($value) {
-        $this->mdpUsager = $value;
-    }
-    public function getMdpUsager() {
-        return $this->mdpUsager;
-    }
-    public function setNumTelUsager($value) {
-        $this->numTelUsager = $value;
-    }
-    public function getNumTelUsager() {
-        return $this->numTelUsager;
+    public function getNbPlaces() {
+        return $this->nbPlaces;
     }
 
 }
