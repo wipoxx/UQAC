@@ -18,6 +18,7 @@ class Voyage extends Hydratable{
     
     public function __construct($data) {
         parent::__construct($data);
+        $this->save();
     }
 
     //Fonction d'enregistrement (ajoute ou modifie en fonction de la valeur de l'id)
@@ -71,7 +72,21 @@ class Voyage extends Hydratable{
         $db = BDDLocale::getInstance();
         $db->execute($query, $parameters);
     }
+    
+    //Récupère le voyage correspondant à l'id en entrée
+    public static function get($id) {
+        $query = "SELECT * FROM voyage WHERE IdVoyage = :idVoyage;";
+        $parameters = array( array('name' => ':idVoyage', 'value' => $id, 'type' => 'string'));
+        $results = null;
+        $db = BDDLocale::getInstance();
+
+        if($db->get($query, $results, $parameters))
+        {
+            return new Voyage($results[0]);
+        }
+    }
  
+    //Récupère tous les voyages d'un conducteur
     public static function getVoyagesConducteur($idUsager) {
         $query = "SELECT * FROM voyage WHERE IdUsager = :idUsager;";
         $parameters = array( array('name' => ':idUsager', 'value' => $idUsager, 'type' => 'string'));
@@ -88,9 +103,18 @@ class Voyage extends Hydratable{
         }
     }
     
-        public static function getVoyagesDate($date) {
-        $query = "SELECT * FROM voyage WHERE DateDepart = :dateDepart;";
-        $parameters = array( array('name' => ':dateDepart', 'value' => $date, 'type' => 'string'));
+    
+    public static function getVoyagesApresDate($date, $villeDep, $villeArr) {
+        $dateMin = date('Y/m/d H:i:s', abs(strtotime($date) - 28800));
+        $dateMax = date('Y/m/d H:i:s', abs(strtotime($date) + 43200));
+        
+        echo $dateMin. ' ';
+        echo $dateMax;
+        echo '<br />';
+        
+        $query = "SELECT * FROM voyage WHERE DateDepart BETWEEN :date1 AND :date2;";
+        $parameters = array( array('name' => ':date1', 'value' => $dateMin, 'type' => 'string'),
+                             array('name' => ':date2', 'value' => $dateMax, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();
 
@@ -98,11 +122,58 @@ class Voyage extends Hydratable{
         {
             $lVoyages = array();
             foreach($results as $result) {
-                $lVoyages[] = new Voyage($result);;
+                $voyage = new Voyage($result);
+                if($voyage->rechercheTrajet($villeDep, $villeArr)) {
+                    $lVoyages[] = $voyage;
+                }
             }
             return $lVoyages;
         }
     }
+
+    
+    //Récupère toutes les villes de départ + heure dans les trajets du voyage
+    private function getVillesDepart() {
+        $query = "SELECT villeDepart, heureDepart FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
+        $parameters = array( array('name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'));
+        $results = null;
+        $db = BDDLocale::getInstance();
+        if($db->get($query, $results, $parameters))
+        {
+            return $results;
+        }
+    }
+        
+    //Récupère toutes les villes d'arrivée + heure dans les trajets du voyage
+    private function getVillesArrivee() {
+        $query = "SELECT villeArrivee FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";
+        $parameters = array( array('name' => ':idVoyage', 'value' => $this->idVoyage, 'type' => 'string'));
+        $results = null;
+        $db = BDDLocale::getInstance();
+        if($db->get($query, $results, $parameters))
+        {
+            return $results;
+        }
+    }
+    
+    //Trouve s'il est possible d'aller d'une ville A à une ville B dans le voyage 
+    //(même si elles ne sont pas du même trajet élémentaire)
+    private function rechercheTrajet($villeDep, $villeArr) {
+        $lDep = $this->getVillesDepart();
+        $lArr = $this->getVillesArrivee();
+        
+        for ($i = 0 ; $i < count($lDep) ; $i++) {
+            if($villeDep == $lDep[$i]['villeDepart']) {
+                for ($j = $i ; $j < count($lArr) ; $j++) {  
+                    //Permet de ne regarder que les villes qui se trouvent après dans le voyage
+                    if ($villeArr == $lArr[$j]['villeArrivee']) {
+                         return true;
+                    }
+                }
+            }
+        } 
+    }
+    
     //Ajouter un trajet à la liste
     public function ajoutTrajet(Etape $eDep, Etape $eArr) {
         array_push($this->lTrajets, new Trajet($eDep, $eArr, $this->nbPlacesVoyage));
@@ -125,53 +196,6 @@ class Voyage extends Hydratable{
             $trajetPassager->ajouterPassager($passager);
         }
         echo 'Passager ajouté voyage';
-    }
-    
-    //En fait il faudrait bouger ce code à l'endroit où on gère le formulaire de recherche et le faire sur tous les voyages présents dans la bdd et avec une date 
-    //Recherche des voyages passant par les deux villes en entrée dans le sens villeDep -> villeArr
-    public function rechercheItineraire(string $villeDep, string $villeArr) {
-        //Récupère toutes les villes du voyage
-        $lVilles = array();
-        foreach($this->lTrajets as $trajet) {
-            $lVilles = array_merge($lVilles, $trajet->getVilles());
-        }
-        
-        foreach($lVilles as $ville) { //Boucle pour chercher la première ville
-            if ($ville == $villeDep) {
-                $indexVilleDep = array_search($villeDep, $lVilles);
-                foreach($lVilles as $ville2) {  //Boucle pour chercher la deuxième ville
-                    if($ville2 == $villeArr) {
-                        $indexVilleArr = array_search($villeArr, $lVilles);
-                        if($indexVilleDep < $indexVilleArr) {   //Si le trajet va bien dans le bon sens
-                            echo 'recherche ok';
-                        } else {
-                            echo 'pas le bon sens';
-                        }
-                    } else {
-                        echo 'pas ville d\'arrivee';
-                    }
-                }
-            } else {
-                echo 'pas ville de départ';
-            }
-        }
-        
-        //Regarde si les villes de la recherche font parties du voyage
-        /*if (in_array($villeDep, $lVilles)) {
-            $indexVilleDep = array_search($villeDep, $lVilles);
-            if(in_array($villeArr, $lVilles)) {
-                $indexVilleArr = array_search($villeArr, $lVilles);
-                if($indexVilleDep < $indexVilleArr) {   //Si le trajet va bien dans le bon sens
-                    echo 'recherche ok';
-                } else {
-                    echo 'pas le bon sens';
-                }
-            } else {
-                echo 'pas ville d\'arrivee';
-            }
-        } else {
-            echo 'pas ville de départ';
-        }*/
     }
     
     //-----------Accesseurs

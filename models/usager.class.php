@@ -39,6 +39,7 @@ class Usager extends Hydratable
         }
         parent::__construct($data);
         $this->nbAnnulations = 0;
+        $this->save();
     }
 
     //Fonction d'enregistrement de l'usager (ajoute ou modifie en fonction de la valeur de l'id)
@@ -90,7 +91,7 @@ class Usager extends Hydratable
     {
         $query = "DELETE FROM usager  WHERE IdUsager = :idUsager;";
         $parameters = array(
-            array( 'name' => ':id', 'value' => $this->idUsager, 'type' => 'int')
+            array( 'name' => ':idUsager', 'value' => $this->idUsager, 'type' => 'int')
         );
 
         $db = BDDLocale::getInstance();
@@ -128,6 +129,7 @@ class Usager extends Hydratable
         
         return $resultat;*/
     }
+    
    /* public function annulerVoyage($voyage) {
         //if ($role == )
     }*/

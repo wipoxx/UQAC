@@ -15,6 +15,7 @@ class Trajet extends Hydratable{
     
     public function __construct($data) {
         parent::__construct($data);
+        $this->save();
     }
 
     //Fonction d'enregistrement (ajoute ou modifie en fonction de la valeur de l'id)
@@ -94,8 +95,8 @@ class Trajet extends Hydratable{
     }
     
     public function ajouterPassager(Usager $passager) {
-        if ($this->nbPlacesTrajet > 1) {
-            --$this->nbPlacesTrajet;
+        if ($this->nbPlaces > 1) {
+            --$this->nbPlaces;
             $lPassagers->array_push($this->lPassagers, $passager);
             echo 'ajout passager trajet ok';
         } else {
@@ -103,6 +104,8 @@ class Trajet extends Hydratable{
         }
     }
        
+    
+    
     //Accesseurs
     public function setIdTrajetElementaire($value) {
         $this->idTrajetElementaire = $value;

@@ -107,7 +107,7 @@ $v1 = array(
 //var_dump($trajet1);
 //$trajet1->save();
     
-$usager = Usager::connexion('iCantHearYou', 'soGood');
+/*$usager = Usager::connexion('iCantHearYou', 'soGood');
 $preference = Preference::get(1, 1, 2);
 
 
@@ -161,4 +161,14 @@ for ($i = 0 ; $i < $taille ; ++$i) {
                         ));
     $trajet->save();
     $lTrajets[] = $trajet;
-}
+    }*/
+
+$voyage = Voyage::get(1);
+//$voyage->getVillesDepart();
+$voyage->getVoyagesApresDate('2017-04-06 15:00:00', 'Dijon', 'Lons-Le-Saunier');
+echo '<br /><br />';
+$voyage->getVoyagesApresDate('2017-04-06', 'Tamere', 'Homer');
+echo '<br /><br />';
+$voyage->getVoyagesApresDate('2017-04-06', 'Chaumont', 'Homer');
+echo '<br /><br />';
+$voyage->getVoyagesApresDate('2017-04-01', 'Dijon', 'Besançon');
