@@ -1,5 +1,12 @@
 <?php
 
+include('config_init.php');
+require_once(_MODELS_ . 'voyage.class.php');
+require_once(_MODELS_ . 'trajet.class.php');
+require_once(_MODELS_ . 'preference.class.php');
+require_once(_MODELS_ . 'usager.class.php');
+require_once(_BDD_ . 'BDDLocale.class.php');
+
 if (empty($_POST['pseudo']))
 {
 	echo '<!DOCTYPE html>
@@ -119,27 +126,25 @@ if(!!preg_match('#^0[0-9]([ .-]?[0-9]{2}){4}$#', $tel) || empty($tel))
 if ($i==0)
 {
 echo'<h1>Inscription terminée</h1>';
-echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['nom_utilisateur'])).' vous �tes maintenant inscrit</p>
-<p>Cliquez <a href="./index.php">ici</a> pour revenir � la page d accueil</p>';
+echo'<p>Bienvenue '.stripslashes(htmlspecialchars($_POST['nom_utilisateur'])).' vous êtes maintenant inscrit</p>
+<p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d\'accueil</p>';
 
 
-$query=$db->prepare('INSERT INTO membres (prenom, nom, nom_utilisateur, mpd, mail, tel)
-VALUES (:prenom, :nom, :nom_utilisateur; :mdp, :mail, :tel)');
-$query->bindValue(':prenomUsager', $prenom, PDO::PARAM_STR);
-$query->bindValue(':nomUsager', $nom, PDO::PARAM_INT);
-$query->bindValue(':pseudoUsager', $nom_utilisateur, PDO::PARAM_STR);
-$query->bindValue(':mdpUsager1', $mdp, PDO::PARAM_STR);
-$query->bindValue(':mdpUsager2', $mdp2, PDO::PARAM_STR);
-$query->bindValue(':emailUsager', $mail, PDO::PARAM_STR);
-$query->bindValue(':numTelUsager', $tel, PDO::PARAM_STR);
+$data = array(
+                'prenomUsager' => $prenom,
+                'nomUsager' => $nom,
+                'pseudoUsager' => $nom_utilisateur,
+                'mdpUsager1' => $mdp,
+                'mdpUsager2' => $mdp2,
+                'emailUsager' => $mail,
+                'numTelUsager' => $tel
+                );
+$p3 = new Usager($data);
 
-    $query->execute();
+    //Et on définit les variables de sessions
+$_SESSION['nom_utilisateur'] = $nom_utilisateur;
+$_SESSION['id'] = $db->lastInsertId(); ;
 
-
-//Et on définit les variables de sessions
-    $_SESSION['nom_utilisateur'] = $nom_utilisateur;
-    $_SESSION['id'] = $db->lastInsertId(); ;
-    $query->CloseCursor();
 }
 else
 {
