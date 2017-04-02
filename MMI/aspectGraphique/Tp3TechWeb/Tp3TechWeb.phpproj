@@ -24,6 +24,7 @@
     <Compile Include="Deconnexion.php" />
     <Compile Include="functions.php" />
     <Compile Include="index.php" />
+    <Compile Include="profil.php" />
     <Compile Include="register.php" />
   </ItemGroup>
   <ItemGroup>

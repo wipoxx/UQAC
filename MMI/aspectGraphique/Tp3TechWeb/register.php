@@ -22,16 +22,28 @@ if (empty($_POST['pseudo']))
 	                        <input name="nom" type="text" id="nom" placeholder="Nom" size ="30"/><br />
 	                        <input name="nom_utilisateur" type="text" id="nom_utilisateur" placeholder="Pseudo" size="30"/><br/>
                         </p>
-	                    <input type="password" name="mdp1" id="mdp1" placeholder="Mot de passe" size ="30" ><br />
-	                    <input type="password" name="mdp2" id="mdp2" placeholder="Confirmer le mot de passe" size="30"/>
+                        <p>
+	                        <input type="password" name="mdp1" id="mdp1" placeholder="Mot de passe" size ="30" ><br />
+	                        <input type="password" name="mdp2" id="mdp2" placeholder="Confirmer le mot de passe" size="30"/>
+                        </p>
 	                </fieldset>
 
 	                <fieldset><legend>Contacts</legend>
-	                    <label for="mail">* Votre adresse Mail :</label><input type="text" name="mail" id="mail" /><br />
-	                    <label for="tel">Numéro de téléphone :</label><input type="text" name="tel" id="tel" /><br />
+                            <p>
+	                            <input type="text" name="mail" id="mail" placeholder="Adresse mail" size="30" /><br />
+	                            <input type="text" name="tel" id="tel" placeholder="Téléphone" size="30" /><br />
+                            </p>
 	                </fieldset>
 
-	                <p>Les champs précédés d\'un * sont obligatoires</p>
+                    <fieldset><legend>Préférences</legend>
+                        <liste>
+                            <p>
+                                <input type="checkbox" name="animaux"> J\'accepte les animaux<br>
+                                <input type="checkbox" name="fumeur"> J\'accepte les fumeurs<br>
+                                <input type="number" name="nbPassagers" min="0" step="1" size="5"> personne(s) maximum<br>
+                            </p>
+                        </liste>
+                    </fieldset>
 	                <p><class="submit"> <button type="submit">S\'inscrire </button></p>
                 </form>
 	        </div>

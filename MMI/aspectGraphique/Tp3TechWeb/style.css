@@ -6,22 +6,39 @@ body{
 	line-height:160%;
 	margin:0;
 	padding:0;
-	text-align:center;
-	}
-
+    text-align:center;
+}
+div{
+    text-align:center;
+}
 h1{
 	font-size:200%;
 	font-weight:normal;
-	}		
-		
-input, textarea{
+    text-align:center;
+	}
+h2{
+    font:150% Trebuchet MS, Arial, Helvetica, Sans-Serif;
+    line-height:160%;
+}		
+h3{
+    font:100% Arial, Helvetica, Sans-Serif;
+}	
+input, textarea, liste{
 	font:100% Trebuchet MS, Arial, Helvetica, Sans-Serif;
 	line-height:160%;
 	color:#333;
 	}				
 p{
 	margin:1em 0;
+    width: auto;	
+	padding:3px 0px 3px 25px;
+    font:100% Trebuchet MS, Arial, Helvetica, Sans-Serif;
+	line-height:160%;
 	}
+
+input[type="number"] {
+   width:30px;
+}
 
 fieldset{
 	margin:0;
@@ -33,13 +50,19 @@ legend{
 	background:#fff;
 	padding:0 5px;
 	font-style:italic;
-	}	
-p{
-	clear:both;
-	margin:.5em 0;
-	overflow:hidden;
-	}	
-	
+    font-size:150%;
+	}
+
+profil{
+    margin : auto;
+    width : 100px;
+}
+
+img{
+    border : 3px solid #cdcdcd;
+}
+
+
 input, textarea{	
 	margin:0;	
 	width: auto;
@@ -55,6 +78,7 @@ input#mail{background:#fff url(form_email.gif) no-repeat 5px 50%;}
 input#mdp1{background:#fff url(cle.gif) no-repeat 5px 50%;}
 input#mdp2{background:#fff url(cle.gif) no-repeat 5px 50%;}
 input#tel{background:#fff url(tel.gif) no-repeat 5px 50%;}
+textarea#preference{background:#fff url(preference.gif) no-repeat 5px 6px;}
 
 button{
 	height:28px;

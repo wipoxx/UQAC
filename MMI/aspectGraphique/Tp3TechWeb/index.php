@@ -23,8 +23,8 @@ if (!isset($_POST['pseudo']))
 	                </fieldset>
                     <p><class="submit"> <button type="submit">Connexion </button></p>
                 </form>
-	            <a href="./register.php">Pas encore inscrit ?</a>
-
+	            <p><a href="./register.php">Pas encore inscrit ?</a></br>
+                <a href="./profil.php">Consulter un profil utilisateur ?</a></p>
             </div>
         </body>
     </html>';
@@ -51,18 +51,18 @@ else
 	    $_SESSION['nom_utilisateur'] = $data['nom_utilisateur'];
 	    $_SESSION['id'] = $data['id'];
 	    $message = '<p>Bienvenue '.$data['nom_utilisateur'].',
-			vous êtes maintenant connecté!</p>
+			vous ï¿½tes maintenant connectÃ©!</p>
 			<p>Cliquez <a href="./index.php">ici</a>
-			pour revenir à la page d accueil</p>';
+			pour revenir Ã  la page d accueil</p>';
 	}
 	else // Acces pas OK !
 	{
 	    $message = '<p>Une erreur s\'est produite
 	    pendant votre identification.<br /> Le mot de passe ou le pseudo
-            entré n\'est pas correcte.</p><p>Cliquez <a href="./connexion.php">ici</a>
-	    pour revenir à la page précédente
+            entrÃ© n\'est pas correcte.</p><p>Cliquez <a href="./connexion.php">ici</a>
+	    pour revenir Ã  la page prÃ©cÃ©dente
 	    <br /><br />Cliquez <a href="./index.php">ici</a>
-	    pour revenir à la page d accueil</p>';
+	    pour revenir Ã  la page d accueil</p>';
 	}
     $query->CloseCursor();
     }
