@@ -9,8 +9,7 @@ if (isset($_POST['nom_utilisateur'])) //On est dans le cas traitement
                     'mdpUsager1' => md5($_POST['mdp1']),
                     'mdpUsager2' => md5($_POST['mdp2']),
                     'emailUsager' => $_POST['mail'],
-                    'numTelUsager' => $_POST['tel'],
-                    'nouvUsager' => true
+                    'numTelUsager' => $_POST['tel']
                     );
     $u = Usager::inscription($data);
 

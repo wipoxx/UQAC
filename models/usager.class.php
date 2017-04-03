@@ -11,6 +11,8 @@ class Usager extends Hydratable
     private $mdpUsager;
     private $emailUsager;
     private $numTelUsager;
+    
+    
     private $nbAnnulations;
     private $role;
     
@@ -35,6 +37,7 @@ class Usager extends Hydratable
         }*/
     
     public function __construct($data = array()) {
+        var_dump($data);
             parent::__construct($data);
             $this->nbAnnulations = 0;
             $this->save();
@@ -181,7 +184,7 @@ class Usager extends Hydratable
         $parameters = array(
             array( 'name' => ':prenomUsager', 'value' => $this->getPrenomUsager(), 'type' => 'string'),
             array( 'name' => ':nomUsager', 'value' => $this->getNomUsager(), 'type' => 'string'),
-            array( 'name' => ':nomUtilisateur', 'value' => $this->getPseudoUsager(), 'type' => 'string'),
+            array( 'name' => ':pseudoUsager', 'value' => $this->getPseudoUsager(), 'type' => 'string'),
             array( 'name' => ':mdpUsager', 'value' => $this->getMdpUsager(), 'type' => 'string'),
             array( 'name' => ':emailUsager', 'value' => $this->getemailUsager(), 'type' => 'string'),
             array( 'name' => ':numTelUsager', 'value' => $this->getNumTelUsager(), 'type' => 'int'),
@@ -209,6 +212,21 @@ class Usager extends Hydratable
         $query = "SELECT * FROM usager WHERE PseudoUsager = :pseudoUsager AND MdpUsager = :mdpUsager;";
         $parameters = array( array('name' => ':pseudoUsager', 'value' => $pseudo, 'type' => 'string'),
                              array('name' => ':mdpUsager', 'value' =>$mdp, 'type' => 'string'));
+        $results = null;
+        $db = BDDLocale::getInstance();
+
+        if($db->get($query, $results, $parameters))
+        {
+            return new Usager($results[0]);
+        }
+
+        return null;
+    }
+    
+    public static function get($idUsager) {
+        $query = "SELECT * FROM usager WHERE IdUsager = :idUsager;";
+        
+        $parameters = array(array('name' => ':idUsager', 'value' =>$idUsager, 'type' => 'int'));
         $results = null;
         $db = BDDLocale::getInstance();
 

@@ -1,9 +1,5 @@
 <?php 
-
-//session_start();
-
+session_start();
 require_once('define_path.php');
-
-//include('include/connexion_bdd.php');
 ?>
     

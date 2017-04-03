@@ -107,23 +107,3 @@ for ($i = 0 ; $i < $taille ; ++$i) {
     $trajet->save();
     $lTrajets[] = $trajet;
     }*/
-
-$voyage = Voyage::get(1);
-//$voyage->getVillesDepart();
-$v1 = $voyage->getVoyagesApresDate('2017-04-06', 'Dijon', 'Lons-Le-Saunier');
-echo '<br /><br />';
-$v2 = $voyage->getVoyagesApresDate('2017-04-06', 'Tamere', 'Homer');
-echo '<br /><br />';
-$v3 = $voyage->getVoyagesApresDate('2017-04-06', 'Chaumont', 'Homer');
-echo '<br /><br />';
-$v4 = $voyage->getVoyagesApresDate('2017-04-10', 'Dijon', 'Besançon');
-
-foreach($v1 as $lTrajets) {
-    foreach($lTrajets as $trajet1) {
-        
-    echo $trajet1 ;
-    echo '<br />';
-    }
-    echo '<br />';
-    echo '<br />';
-}

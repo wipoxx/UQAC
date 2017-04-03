@@ -124,6 +124,7 @@ class BaseDeDonnees
                     $query->bindValue($param['name'], $param['value'], $this->getPDOType($param['type']));
                 }
                 $valRet = $query->execute() !== false;
+                
             } else {
                 $valRet = $this->link->query($requete) !== false;
             }
