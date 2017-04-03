@@ -25,7 +25,6 @@ if(isset($_SESSION['idUsager'])) {
 
     $lEtapes[] =  array('ville' => $_POST['arrivee'], 'heure' => $_POST['hArr']);
 
-        var_dump($lEtapes);
     $taille = count($lEtapes) - 1;
 
     $voyage = new Voyage(array(

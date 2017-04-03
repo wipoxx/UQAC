@@ -33,7 +33,7 @@ class View {
     }
     
     protected function afficherNav() {
-        include(_TPL_ . 'nav_invite.html');
+        include(_TPL_ . 'nav.php');
     }
     
     
