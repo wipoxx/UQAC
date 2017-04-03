@@ -5,37 +5,10 @@ class View {
     private $style;
 
     
-//Constructeur qui accepte 2 ou 3 paramètres (seule façon de le faire)
-public function __construct()
-{
-    $compteurArgs = func_num_args();
-    $args = func_get_args();
-    switch($compteurArgs)
+    public function __construct(string $titre, string $description)
     {
-        case 2 :
-            $this->constructSansStyle($args[0],$args[1]);
-            break;
-        case 3:
-            $this->constructAvecStyle($args[0],$args[1],$args[2]);
-            break;
-         default:
-            break;
-    }
-}
- 
-    //Constructeur lorsque un style est spécifié een 3e paramètre
-    private function constructAvecStyle(string $titre, string $description, string $style) {
         $this->titre = $titre;
         $this->description = $description;
-        $this->style = $style;
-        
-    }
-    
-    //Constructeur lorsque seul le titre et la description de la page sont spécifiés
-    private function constructSansStyle(string $titre, string $description) {
-        $this->titre = $titre;
-        $this->description = $description;
-        
     }
     
     public function getTitre() {
