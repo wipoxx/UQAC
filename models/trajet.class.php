@@ -30,7 +30,7 @@ class Trajet extends Hydratable{
             array( 'name' => ':idReservation', 'value' => $this->idReservation, 'type' => 'int')
         );
         $db = BDDLocale::getInstance();
-        $db->execute($query, $parameters);
+        $this->idTrajet = $db->insert($query, $parameters);
     }
 
     //Modifie le trajet dans la base de données

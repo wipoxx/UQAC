@@ -34,7 +34,7 @@ class Preference extends Hydratable{
         );
 
         $db = BDDLocale::getInstance();
-        $db->execute($query, $parameters);
+        $this->idPreference = $db->insert($query, $parameters);
     }
 
     //Modifie la préférence dans la base de données

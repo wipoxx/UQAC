@@ -14,6 +14,9 @@ class Usager extends Hydratable
     private $nbAnnulations;
     private $role;
     
+    private static $erreurInscription = false;
+    private static $lErreurs_inscription = array();
+    
     //construit un nouveau membre -> l'inscrit
     /*public function __construct($pseudoUsager, $nomUsager, $pseudoUsager, $mdpUsager1, $mdpUsager2, $emailUsager, $tel) {
         $resultat = $this->verifInscription($pseudoUsager, $nomUsager, $pseudoUsager, $mdpUsager1, $mdpUsager2, $emailUsager, $tel);
@@ -32,16 +35,120 @@ class Usager extends Hydratable
         }*/
     
     public function __construct($data = array()) {
+            parent::__construct($data);
+            $this->nbAnnulations = 0;
+            $this->save();
+            $this->demarrerSession();
         
+    }
+    
+    public static function inscription($data = array()) {
         //verifInscription
-        if (isset ($data['mdpUsager1'])) {
-            $data['mdpUsager'] = $data['mdpUsager1'];
+        if(isset($data['pseudoUsager']) && isset($data['mdpUsager1']) && isset($data['mdpUsager2']) && isset($data['emailUsager']) && isset($data['numTelUsager'])) {
+            if(!empty($data['pseudoUsager']) &&!empty($data['mdpUsager1']) &&!empty($data['mdpUsager2']) &&!empty($data['emailUsager']) &&!empty($data['numTelUsager'])) {
+                Usager::verifemailUsager($data['emailUsager']);
+                Usager::verifTel($data['numTelUsager']);
+                Usager::verifNomUtilisateur($data['pseudoUsager']);
+                Usager::verifMdp($data['mdpUsager1'], $data['mdpUsager2']);
+                //Si l'inscription est possible
+                $erreur = Usager::getErreurInscription();
+                if(!$erreur) {
+                    if (isset ($data['mdpUsager1'])) {
+                        $data['mdpUsager'] = $data['mdpUsager1'];
+                    }
+                    $u = new Usager($data);
+                    echo'<h1>Inscription terminée</h1>';
+                    echo'<p>Bienvenue '. $u->pseudoUsager. ' vous êtes maintenant inscrit</p> 
+                    <p>Cliquez <a href="./index.php">ici</a> pour revenir à la page d accueil</p>';            
+                }
+            } else {
+            echo 'Il manque au moins un champ obligatoire';
+            }   
+        } 
+    }
+    
+    public static function verifInscription($pseudoUsager, $mdpUsager1, $mdpUsager2, $emailUsager, $tel) {
+        Usager::verifemailUsager($emailUsager);
+        Usager::verifTel($tel);
+        Usager::verifNomUtilisateur($pseudoUsager);
+        Usager::verifMdp($mdpUsager1, $mdpUsager2);
+        
+    }
+    
+    //vérifie si l'email est déjà pris ou qu'il n'a pas la forme requise
+    private static function verifemailUsager(string $emailUsager) {   
+        $query = "SELECT COUNT(*) AS nbr FROM usager NATURAL JOIN voyage  WHERE EmailUsager = :email;";
+        $parameters = array( array('name' => ':email', 'value' => $emailUsager, 'type' => 'string'));
+        $results = null;
+        $mail_ok = true;
+        $db = BDDLocale::getInstance();
+        if($db->get($query, $results, $parameters))
+        {
+            if($results[0]['nbr'] > 0) {
+                echo "Votre adresse email est déjà utilisée par un membre";
+                $mail_ok = false;
+                Usager::setErreurInscription(true);
+            }
         }
-        parent::__construct($data);
-        $this->nbAnnulations = 0;
-        $this->save();
+        
+        if ($mail_ok) {
+            //On vérifie la forme maintenant
+            /*if (!preg_match("#^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-z]{2,4}$#", $mail) || empty($mail))
+            {
+                $lErreurs_inscription[] = "Votre adresse E-Mail n'a pas un format valide";  
+            }*/
+        }
+    }
+    
+    //verifie si le num de tel n'est pas dans le format français
+    private static function verifTel(string $tel) {
+        /*if(!!preg_match('#^0[0-9]([ .-]?[0-9]{2}){4}$#', $tel) || empty($tel))
+        {
+            $lErreurs_inscription[] = "Votre numéro de téléphone n'a pas un format valide (Français)";
+        }*/
+    }
+    
+    //verifie que le nom de l'utilisateur a la bonne taille est n'est pas pris par un membre
+    private static function verifNomUtilisateur(string $pseudo) {
+        $query = "SELECT COUNT(*) AS nbr FROM usager WHERE PseudoUsager = :pseudoUsager;";
+        $parameters = array( array('name' => ':pseudoUsager', 'value' => $pseudo, 'type' => 'string'));
+        $results = null;
+        $pseudo_ok = true;
+        $db = BDDLocale::getInstance();
+        if($db->get($query, $results, $parameters))
+        {
+            if ($results[0]['nbr'] > 0) {
+                echo 'Votre pseudo est déjà utilisé par un membre';
+                $pseudo_ok = false;
+                Usager::setErreurInscription(true);
+            }            
+        }
+        
+        if($pseudo_ok) {
+            if (strlen($pseudo) < 5 || strlen($pseudo) > 15)
+            {
+                echo 'Votre pseudo est soit trop grand, soit trop petit (entre 5 et 15 caractères)';
+                Usager::setErreurInscription(true);
+            }
+        }
+    }
+    
+    //Vérifie que les 2 mdp correspondent
+    private static function verifMdp(string $mdp, string $mdp2) {
+        if ($mdp != $mdp2)
+        {
+            echo 'Votre mot de passe et votre confirmation diffèrent.';
+            Usager::setErreurInscription(true);
+        }
     }
 
+    private function demarrerSession() {
+        if(!isset($_SESSION['pseudoUsager']) && !isset($_SESSION['idUsager'])) {
+            $_SESSION['pseudoUsager'] = $this->pseudoUsager;
+            $_SESSION['idUsager'] = $this->idUsager;
+        }
+    }
+    
     //Fonction d'enregistrement de l'usager (ajoute ou modifie en fonction de la valeur de l'id)
     public function save()
     {
@@ -50,7 +157,6 @@ class Usager extends Hydratable
         else
             $this->insert();
     }
-
 
     //Ajoute l'usager à la base de données
     private function insert()
@@ -65,7 +171,7 @@ class Usager extends Hydratable
             array( 'name' => ':numTelUsager', 'value' => $this->getNumTelUsager(), 'type' => 'int')
         );
         $db = BDDLocale::getInstance();
-        $db->execute($query, $parameters);
+        $this->idUsager = $db->insert($query, $parameters);
     }
 
     //Modifie l'usager dans la base de données
@@ -78,7 +184,7 @@ class Usager extends Hydratable
             array( 'name' => ':nomUtilisateur', 'value' => $this->getPseudoUsager(), 'type' => 'string'),
             array( 'name' => ':mdpUsager', 'value' => $this->getMdpUsager(), 'type' => 'string'),
             array( 'name' => ':emailUsager', 'value' => $this->getemailUsager(), 'type' => 'string'),
-            array( 'name' => ':numTelUsager', 'value' => $this->getTelUsager(), 'type' => 'int'),
+            array( 'name' => ':numTelUsager', 'value' => $this->getNumTelUsager(), 'type' => 'int'),
             array( 'name' => ':idUsager', 'value' => $this->getIdUsager(), 'type' => 'int')
         );
 
@@ -100,10 +206,9 @@ class Usager extends Hydratable
     
     //Connexion d'un usager : crée les variables de session
    public static function connexion(string $pseudo, string $mdp) {
-        
         $query = "SELECT * FROM usager WHERE PseudoUsager = :pseudoUsager AND MdpUsager = :mdpUsager;";
         $parameters = array( array('name' => ':pseudoUsager', 'value' => $pseudo, 'type' => 'string'),
-                             array('name' => ':mdpUsager', 'value' => $mdp, 'type' => 'string'));
+                             array('name' => ':mdpUsager', 'value' =>$mdp, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();
 
@@ -113,21 +218,6 @@ class Usager extends Hydratable
         }
 
         return null;
-        
-        /*if ($pseudoUsager == $this->nomUtilisateur) {
-            if(sha1$(mdp) == $this->mdp) {
-                session_start();
-                $_SESSION['id'] = $this->id;
-                $_SESSION['nomUtilisateur'] = $this->nomUtilisateur;
-                $resultat = 'Vous êtes connecté.';
-            } else {
-                $resultat = 'Erreur de connexion : recommencez.';
-            }
-        } else {
-            $resultat = 'Erreur de connexion : recommencez.';
-        }
-        
-        return $resultat;*/
     }
     
    /* public function annulerVoyage($voyage) {
@@ -143,52 +233,7 @@ class Usager extends Hydratable
         return $res;
         
     }    
-    /*private function verifInscription($pseudoUsager, $nomUsager, $pseudoUsager, $mdpUsager1, $mdpUsager2, $emailUsager, $tel) {
-        if (!empty($pseudoUsager) && !empty($nomUsager) && !empty($pseudoUsager) && !empty($mdpUsager1) && !empty($mdpUsager2) && !empty($emailUsager) && !empty($tel)) {
-            if ($mdpUsager1 == $mdpUsager2) {
-                if (strlen($pseudoUsager) > 1) {
-                    if (strlen($nomUsager) > 1) {
-                        if ($this->verifemailUsager($emailUsager)) {
-                            if ($this->verifTel($tel)) {
-                                if ($this->verifNomUtilisateur($pseudoUsager)) {
-                                    $resultat = "ok";
-                                } else {
-                                    $resultat = "Le nom d'utilisateur est déjà utilisé";
-                                }
-                            } else {
-                                $resultat = "Le numéro de téléphone est invalide";
-                            }
-                        } else {
-                            $resultat = "L'adresse de courriel est invalide";
-                        }
-                    } else {
-                        $resultat = "Le nom est trop court";
-                    }
-                } else {
-                    $resultat = "Le prénom est trop court";
-                }
-            } else {
-                $resultat = "Les deux mots de passe ne correspondent pas";
-            }
-        } else {
-            $resultat = "Veuillez remplir tous les champs";
-        }
     
-        return $resultat;
-    }*/
-    /*private function verifemailUsager(string $emailUsager) {
-        //regex pour verif email
-        return true;
-    }*/
-    /*private function verifTel(string $tel) {
-        //regex pour verif le numéro de tel
-        return true;
-    }*/
-    /*private function verifNomUtilisateur(string $pseudo) {
-        //check si le pseudo est dans la bdd ou non
-        return true;
-    }*/
-
 //------------- Accesseurs
 
     public function setIdUsager($value) {
@@ -232,6 +277,12 @@ class Usager extends Hydratable
     }
     public function getNumTelUsager() {
         return $this->numTelUsager;
+    }
+    public static function getErreurInscription() {
+        return Usager::$erreurInscription;
+    }
+    public static function setErreurInscription($value) {
+        Usager::$erreurInscription = $value;
     }
 
 }

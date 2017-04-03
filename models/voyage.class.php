@@ -131,7 +131,6 @@ class Voyage extends Hydratable{
         }
     }
 
-    
     //Récupère toutes les villes de départ + heure dans les trajets du voyage
     private function getVillesDepart() {
         $query = "SELECT idTrajetElementaire, villeDepart FROM trajetelementaire NATURAL JOIN voyage  WHERE IdVoyage = :idVoyage;";

@@ -40,7 +40,7 @@ class TrajetElementaire extends Hydratable{
             array( 'name' => ':heureArrivee', 'value' => $this->heureArrivee, 'type' => 'time')
         );
         $db = BDDLocale::getInstance();
-        $db->execute($query, $parameters);
+        $this->idTrajetElementaire = $db->insert($query, $parameters);
     }
 
     //Modifie le trajet dans la base de données

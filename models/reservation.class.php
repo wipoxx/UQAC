@@ -34,7 +34,7 @@ class Reservation extends Hydratable
             array( 'name' => ':nbPlaces', 'value' => $this->getNbPlaces(), 'type' => 'int')
         );
         $db = BDDLocale::getInstance();
-        $db->execute($query, $parameters);
+        $this->idReservation = $db->insert($query, $parameters);
     }
 
     //Modifie dans la base de données
