@@ -108,8 +108,8 @@ class TrajetElementaire extends Hydratable{
  
     public function __toString() {
         $res = '';
-        $res .= 'Départ :<br />' . $this->villeDepart . ' à ' .$this->heureDepart. '<br />';
-        $res .= 'Arrivée :<br />' . $this->villeArrivee . ' à ' .$this->heureArrivee. '<br />';
+        $res .= $this->villeDepart . ' (' .$this->heureDepart. ') ---> ';
+        $res .= $this->villeArrivee . ' (' .$this->heureArrivee. ')<br />';
         return $res;
     }
     
