@@ -37,11 +37,10 @@ class Usager extends Hydratable
         }*/
     
     public function __construct($data = array()) {
-        var_dump($data);
-            parent::__construct($data);
-            $this->nbAnnulations = 0;
-            $this->save();
-            $this->demarrerSession();
+        parent::__construct($data);
+        $this->nbAnnulations = 0;
+        $this->save();
+        $this->demarrerSession();
         
     }
     

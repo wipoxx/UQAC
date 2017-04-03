@@ -8,22 +8,24 @@ if(isset($_SESSION['idUsager'])) {
     if(isset($_POST['depart']) && isset($_POST['hDep']) && isset($_POST['arrivee']) && isset($_POST['hArr']) && isset($_POST['date'])) {
     $usager = Usager::get($_SESSION['idUsager']);
     $preference = Preference::get(1, 1, 2);
+        
     $lEtapes = array(
         array('ville' => $_POST['depart'], 'heure' => $_POST['hDep'])
     );
         
-    if (isset($_POST['etape1'])) {
+    if (!empty($_POST['etape1'])) {
        $lEtapes[] =  array('ville' => $_POST['etape1'], 'heure' => $_POST['hEt1']);
     }
-    if (isset($_POST['etape2'])) {
+    if (!empty($_POST['etape2'])) {
        $lEtapes[] =  array('ville' => $_POST['etape2'], 'heure' => $_POST['hEt2']);
     }
-    if (isset($_POST['etape3'])) {
+    if (!empty($_POST['etape3'])) {
        $lEtapes[] =  array('ville' => $_POST['etape3'], 'heure' => $_POST['hEt3']);
     }
 
     $lEtapes[] =  array('ville' => $_POST['arrivee'], 'heure' => $_POST['hArr']);
 
+        var_dump($lEtapes);
     $taille = count($lEtapes) - 1;
 
     $voyage = new Voyage(array(
