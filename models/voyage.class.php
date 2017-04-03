@@ -104,12 +104,13 @@ class Voyage extends Hydratable{
     
     
     public static function getVoyagesApresDate($date, $villeDep, $villeArr) {
-        $dateMin = date('Y/m/d H:i:s', abs(strtotime($date) - 28800));
-        $dateMax = date('Y/m/d H:i:s', abs(strtotime($date) + 43200));
-        //$query = "SELECT * FROM voyage WHERE DateDepart BETWEEN :date1 AND :date2;";
-        $query = "SELECT * FROM voyage WHERE DateDepart >= :date;";
-        /*$parameters = array( array('name' => ':date1', 'value' => $dateMin, 'type' => 'string'),
+        /*$dateMin = date('Y-m-d H:i:s', abs(strtotime($date) - 28800));
+        $dateMax = date('Y-m-d H:i:s', abs(strtotime($date) + 43200));
+        $query = "SELECT * FROM voyage WHERE DateDepart BETWEEN :date1 AND :date2;";
+        $parameters = array( array('name' => ':date1', 'value' => $dateMin, 'type' => 'string'),
                              array('name' => ':date2', 'value' => $dateMax, 'type' => 'string'));*/
+        
+        $query = "SELECT * FROM voyage WHERE DateDepart >= :date;";
         $parameters = array( array('name' => ':date', 'value' => $date, 'type' => 'string'));
         $results = null;
         $db = BDDLocale::getInstance();

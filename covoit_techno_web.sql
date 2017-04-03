@@ -1,70 +1,18 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.1
--- http://www.phpmyadmin.net
+-- version 4.6.4
+-- https://www.phpmyadmin.net/
 --
--- Client :  127.0.0.1
--- Généré le :  Jeu 30 Mars 2017 à 21:50
--- Version du serveur :  10.1.19-MariaDB
--- Version de PHP :  5.6.28
+-- Client :  localhost:8889
+-- Généré le :  Lun 03 Avril 2017 à 16:35
+-- Version du serveur :  5.6.33
+-- Version de PHP :  7.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
 --
--- Base de données :  `covoit_techno_web`
+-- Base de données :  `travelExpress`
 --
-
--- --------------------------------------------------------
-
---
--- Structure de la table `composetrajet`
---
-
-CREATE TABLE `composetrajet` (
-  `IdTrajet` int(11) NOT NULL,
-  `IdTrajetElementaire` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `preference`
---
-
-CREATE TABLE `preference` (
-  `IdPreference` int(11) NOT NULL,
-  `Animaux` tinyint(1) NOT NULL,
-  `Fumeur` tinyint(1) NOT NULL,
-  `NbMaxBagages_Personne` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `reservation`
---
-
-CREATE TABLE `reservation` (
-  `IdUsager` int(11) NOT NULL,
-  `IdTrajet` int(11) NOT NULL,
-  `NbPlace` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Structure de la table `trajet`
---
-
-CREATE TABLE `trajet` (
-  `IdTrajet` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -76,72 +24,39 @@ CREATE TABLE `trajetelementaire` (
   `IdTrajetElementaire` int(11) NOT NULL,
   `IdVoyage` int(11) NOT NULL,
   `NbPlaces` int(11) NOT NULL,
-  `VilleDep` varchar(100) NOT NULL,
-  `HeureDep` time NOT NULL,
-  `VilleArr` varchar(100) NOT NULL,
-  `HeureArr` time NOT NULL
+  `VilleDepart` varchar(100) NOT NULL,
+  `HeureDepart` time NOT NULL,
+  `VilleArrivee` varchar(100) NOT NULL,
+  `HeureArrivee` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
-
 --
--- Structure de la table `usager`
+-- Contenu de la table `trajetelementaire`
 --
 
-CREATE TABLE `usager` (
-  `IdUsager` int(11) NOT NULL COMMENT 'Id de l''usager',
-  `PseudoUsager` varchar(100) NOT NULL,
-  `NomUsager` varchar(100) DEFAULT NULL COMMENT 'Nom del''usager',
-  `PrenomUsager` varchar(100) NOT NULL,
-  `EmailUsager` varchar(100) DEFAULT NULL COMMENT 'Email de l''usager',
-  `NumTelUsager` bigint(20) DEFAULT NULL COMMENT 'Numero de telephone (supposé sur plus de 10 digits)',
-  `MdpUsager` varchar(16) DEFAULT NULL COMMENT 'Mot de passe du compte usager',
-  `IdSession` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Table des usagers de l''application';
-
--- --------------------------------------------------------
-
---
--- Structure de la table `voyage`
---
-
-CREATE TABLE `voyage` (
-  `IdVoyage` int(11) NOT NULL,
-  `IdUsager` int(11) NOT NULL COMMENT 'IdUsager du conducteur',
-  `NbPlaces` int(11) NOT NULL,
-  `IdPreference` int(11) NOT NULL,
-  `DateDepart` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `trajetelementaire` (`IdTrajetElementaire`, `IdVoyage`, `NbPlaces`, `VilleDepart`, `HeureDepart`, `VilleArrivee`, `HeureArrivee`) VALUES
+(1, 1, 3, 'Chaumont', '09:30:00', 'Dijon', '11:00:00'),
+(2, 1, 3, 'Dijon', '11:10:00', 'Besançon', '12:30:00'),
+(3, 1, 3, 'Besançon', '12:30:00', 'Lons-Le-Saunier', '14:10:00'),
+(4, 2, 3, 'Lons-Le-Saunier', '09:00:00', 'Besançon', '11:00:00'),
+(5, 2, 3, 'Besançon', '11:10:00', 'Chaumont', '15:20:00'),
+(6, 1, 3, 'Tamere', '06:00:00', 'Homer', '03:00:00'),
+(7, 17, 3, 'Chaumont', '07:30:00', 'Dijon', '08:30:00'),
+(8, 17, 3, 'Dijon', '08:30:00', 'Besançon', '09:30:00'),
+(9, 17, 3, 'Besançon', '09:30:00', 'Lons-Le-Saunier', '11:30:00'),
+(10, 17, 3, 'Lons-Le-Saunier', '11:30:00', 'Trépugnat', '12:00:00'),
+(11, 18, 3, 'Chaumont', '07:30:00', 'Dijon', '08:30:00'),
+(12, 18, 3, 'Dijon', '08:30:00', 'Besançon', '09:30:00'),
+(13, 18, 3, 'Besançon', '09:30:00', 'Lons-Le-Saunier', '11:30:00'),
+(14, 18, 3, 'Lons-Le-Saunier', '11:30:00', 'Trépugnat', '12:00:00'),
+(15, 19, 3, 'Chaumont', '07:30:00', 'Dijon', '08:30:00'),
+(16, 19, 3, 'Dijon', '08:30:00', 'Besançon', '09:30:00'),
+(17, 19, 3, 'Besançon', '09:30:00', 'Lons-Le-Saunier', '11:30:00'),
+(18, 19, 3, 'Lons-Le-Saunier', '11:30:00', 'Trépugnat', '12:00:00');
 
 --
 -- Index pour les tables exportées
 --
-
---
--- Index pour la table `composetrajet`
---
-ALTER TABLE `composetrajet`
-  ADD PRIMARY KEY (`IdTrajet`,`IdTrajetElementaire`),
-  ADD KEY `FK_trajetelem_compose` (`IdTrajetElementaire`);
-
---
--- Index pour la table `preference`
---
-ALTER TABLE `preference`
-  ADD PRIMARY KEY (`IdPreference`);
-
---
--- Index pour la table `reservation`
---
-ALTER TABLE `reservation`
-  ADD PRIMARY KEY (`IdUsager`,`IdTrajet`),
-  ADD KEY `FK_trajet` (`IdTrajet`);
-
---
--- Index pour la table `trajet`
---
-ALTER TABLE `trajet`
-  ADD PRIMARY KEY (`IdTrajet`);
 
 --
 -- Index pour la table `trajetelementaire`
@@ -151,79 +66,20 @@ ALTER TABLE `trajetelementaire`
   ADD KEY `FK_trajetElem_voyage` (`IdVoyage`);
 
 --
--- Index pour la table `usager`
---
-ALTER TABLE `usager`
-  ADD PRIMARY KEY (`IdUsager`);
-
---
--- Index pour la table `voyage`
---
-ALTER TABLE `voyage`
-  ADD PRIMARY KEY (`IdVoyage`),
-  ADD KEY `FK_Voyage_Usager` (`IdUsager`),
-  ADD KEY `fk_preference` (`IdPreference`);
-
---
 -- AUTO_INCREMENT pour les tables exportées
 --
 
 --
--- AUTO_INCREMENT pour la table `preference`
---
-ALTER TABLE `preference`
-  MODIFY `IdPreference` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `trajet`
---
-ALTER TABLE `trajet`
-  MODIFY `IdTrajet` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT pour la table `trajetelementaire`
 --
 ALTER TABLE `trajetelementaire`
-  MODIFY `IdTrajetElementaire` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT pour la table `usager`
---
-ALTER TABLE `usager`
-  MODIFY `IdUsager` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id de l''usager';
---
--- AUTO_INCREMENT pour la table `voyage`
---
-ALTER TABLE `voyage`
-  MODIFY `IdVoyage` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `IdTrajetElementaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- Contraintes pour les tables exportées
 --
-
---
--- Contraintes pour la table `composetrajet`
---
-ALTER TABLE `composetrajet`
-  ADD CONSTRAINT `FK_trajet_compose` FOREIGN KEY (`IdTrajet`) REFERENCES `trajet` (`IdTrajet`),
-  ADD CONSTRAINT `FK_trajetelem_compose` FOREIGN KEY (`IdTrajetElementaire`) REFERENCES `trajetelementaire` (`IdTrajetElementaire`);
-
---
--- Contraintes pour la table `reservation`
---
-ALTER TABLE `reservation`
-  ADD CONSTRAINT `FK_Usager` FOREIGN KEY (`IdUsager`) REFERENCES `usager` (`IdUsager`),
-  ADD CONSTRAINT `FK_trajet` FOREIGN KEY (`IdTrajet`) REFERENCES `trajet` (`IdTrajet`);
 
 --
 -- Contraintes pour la table `trajetelementaire`
 --
 ALTER TABLE `trajetelementaire`
   ADD CONSTRAINT `FK_trajetElem_voyage` FOREIGN KEY (`IdVoyage`) REFERENCES `voyage` (`IdVoyage`);
-
---
--- Contraintes pour la table `voyage`
---
-ALTER TABLE `voyage`
-  ADD CONSTRAINT `FK_Voyage_Usager` FOREIGN KEY (`IdUsager`) REFERENCES `usager` (`IdUsager`),
-  ADD CONSTRAINT `fk_preference` FOREIGN KEY (`IdPreference`) REFERENCES `preference` (`IdPreference`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
